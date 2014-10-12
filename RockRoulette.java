@@ -100,7 +100,7 @@ public class RockRoulette implements KeyListener {
     public static void main(String[] args) throws Exception{
     	//Server properties
     	String server = "54.172.108.156";
-    	int port = 9000;
+    	int port = 9003;
     	
     	//Add controller
     	SampleListener listener = new SampleListener();
