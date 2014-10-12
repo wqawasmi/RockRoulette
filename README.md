@@ -1,4 +1,4 @@
 LeapHandInterface
 =================
 
-Hand Interface alternative to mouse/keyboard using Leap Motion
+Rock Paper Scissors Roulette with Leap Motion and TCP Sockets
