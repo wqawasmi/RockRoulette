@@ -58,19 +58,19 @@ class SampleListener extends Listener {
     				switch(RockRoulette.handGesture) {
     				case PAPER:
     					System.out.println("PAPER");
-    					RockRoulette.outToServer.writeBytes("PAPER\n");
+    					RockRoulette.outToServer.writeBytes("PAPER");
     					break;
     				case ROCK:
     					System.out.println("ROCK");
-    					RockRoulette.outToServer.writeBytes("ROCK\n");
+    					RockRoulette.outToServer.writeBytes("ROCK");
     					break;
     				case SCISSOR:
     					System.out.println("SCISSOR");
-    					RockRoulette.outToServer.writeBytes("SCISSOR\n");
+    					RockRoulette.outToServer.writeBytes("SCISSOR");
     					break;
     				default:
     					System.out.println("FAILED");
-    					RockRoulette.outToServer.writeBytes("NOTHING\n");
+    					RockRoulette.outToServer.writeBytes("NOTHING");
     				}
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
@@ -100,7 +100,7 @@ public class RockRoulette implements KeyListener {
     public static void main(String[] args) throws Exception{
     	//Server properties
     	String server = "54.172.108.156";
-    	int port = 9007;
+    	int port = 9010;
     	
     	//Add controller
     	SampleListener listener = new SampleListener();
