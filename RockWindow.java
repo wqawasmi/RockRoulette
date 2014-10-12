@@ -1,27 +1,29 @@
+
+
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.border.*;
 
-/*
- * To use in RockRoulette.java:
- * 
- * Before main() add "public static RockWindow rw;"
- * 
- * Before new SampleListener() in main() add "rw = new RockWindow(); rw.showRadioButtonDemo();"
- * 
- * Before switch(RockRoulette.handGesture) in onFrame() add "RockRoulette.rw.setGesture(RockRoulette.handGesture);"
- */
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RockWindow extends JFrame {
 	
 	   private JFrame mainFrame;
 	   private JLabel headerLabel;
 	   private JLabel statusLabel;
-	   private JPanel controlPanel;
+	   private JPanel controlPanel, controlPanel2;
+	   
+	   private int p1wins = 0, p2wins = 0, ties = 0;
 	   
 	   private JRadioButton radNothing, radRock, radPaper, radScissor;
-	   private ButtonGroup group;
+	   private ButtonGroup p1choice;
+	   
+	   private JRadioButton winNeither, winP1, winP2;
+	   private ButtonGroup winrar;
 
 	   public RockWindow(){
 		   SwingUtilities.invokeLater(new Runnable() {
@@ -32,21 +34,52 @@ public class RockWindow extends JFrame {
 			    });
 	   }
 	   
+	   public void setStatus(String what)
+	   {
+		   statusLabel.setText(what);
+	   }
+	   
+	   private enum Winner { Player1, Player2, Tie };  
+	   public void declareWinner(Winner w)
+	   {
+		   switch (w)
+		   {
+		   case Player1:
+			   winrar.setSelected(winP1.getModel(), true);
+			   p1wins++;
+			   setStatus("Latest win #" + p1wins + " from Player1!");
+			   break;
+		   case Player2:
+			   winrar.setSelected(winP2.getModel(), true);
+			   p2wins++;
+			   setStatus("Latest win #" + p2wins + " from Player2!");
+			   break;
+		   case Tie:
+			   winrar.setSelected(winNeither.getModel(), true);
+			   ties++;
+			   setStatus("Latest tie #" + ties);
+			   break;
+		   default:
+			   setStatus("I can't understand who won!");
+		     break;
+		   }
+	   }
+	   
 	   public void setGesture(RockRoulette.HandGesture gesture)
 	   {
 		   switch (gesture)
 		   {
 		   case ROCK:
-			   group.setSelected(radRock.getModel(), true);
+			   p1choice.setSelected(radRock.getModel(), true);
 			   break;
 		   case PAPER:
-			   group.setSelected(radPaper.getModel(), true);
+			   p1choice.setSelected(radPaper.getModel(), true);
 			   break;
 		   case SCISSOR:
-			   group.setSelected(radScissor.getModel(), true);
+			   p1choice.setSelected(radScissor.getModel(), true);
 			   break;
 		   default:
-			   group.setSelected(radNothing.getModel(), true);
+			   p1choice.setSelected(radNothing.getModel(), true);
 			   break;
 		   }
 	   }
@@ -63,35 +96,55 @@ public class RockWindow extends JFrame {
 		      headerLabel = new JLabel("", JLabel.CENTER);        
 		      statusLabel = new JLabel("",JLabel.CENTER);    
 
-		      statusLabel.setSize(350,100);
+		      statusLabel.setSize(300,100);
+		      statusLabel.setText("No wins to speak of, yet...");
 
 		      controlPanel = new JPanel();
 		      controlPanel.setLayout(new FlowLayout());
+		      
+		      controlPanel2 = new JPanel();
+		      controlPanel2.setLayout(new FlowLayout());
 
 		      mainFrame.add(headerLabel);
 		      mainFrame.add(controlPanel);
+		      mainFrame.add(controlPanel2);
 		      mainFrame.add(statusLabel);
 		      mainFrame.setVisible(true);  
 		   }
 
 		   public void showRadioButtonDemo(){
 
-			  radNothing = new JRadioButton("Nothing", true);
-		      radRock = new JRadioButton("Rock");
+			  
+			  radNothing = new JRadioButton("Neither", true);
+			  radRock = new JRadioButton("Rock");
 		      radPaper = new JRadioButton("Paper");
 		      radScissor = new JRadioButton("Scissors");
+		      
+		      winNeither = new JRadioButton("Tie", true);
+		      winP1 = new JRadioButton("Player 1 Wins!");
+		      winP2 = new JRadioButton("Player 2 Wins!");
 
-		      //Group the radio buttons.
-		      group = new ButtonGroup();
-		      group.add(radNothing);
-		      group.add(radRock);
-		      group.add(radPaper);
-		      group.add(radScissor);
+		      //Group the first radio buttons.
+		      p1choice = new ButtonGroup();
+		      p1choice.add(radNothing);
+		      p1choice.add(radRock);
+		      p1choice.add(radPaper);
+		      p1choice.add(radScissor);
+		      
+		      //Group the second group.
+		      winrar = new ButtonGroup();
+		      winrar.add(winNeither/*, BorderLayout.CENTER*/);
+		      winrar.add(winP1/*, BorderLayout.LINE_START*/);
+		      winrar.add(winP2/*, BorderLayout.LINE_END*/);
 
 		      controlPanel.add(radNothing);
 		      controlPanel.add(radRock);
 		      controlPanel.add(radPaper);
-		      controlPanel.add(radScissor);   
+		      controlPanel.add(radScissor);
+		      
+		      controlPanel2.add(winNeither);
+		      controlPanel2.add(winP1);
+		      controlPanel2.add(winP2);
 
 		      mainFrame.setVisible(true);  
 		   }
