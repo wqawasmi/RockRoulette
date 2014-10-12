@@ -86,6 +86,13 @@ class SampleListener extends Listener {
     			//Reset tStart after certain time passed
     			tStart = System.currentTimeMillis();
     		}
+    		
+    		try {
+    			if(RockRoulette.inFromServer.ready() == true)
+    				System.out.println("FROM SERVER: WINNER IS " + RockRoulette.inFromServer.readLine());
+    		} catch(Exception e) {
+    			System.out.println("Error getting data FROM server.");
+    		}
     	}
     
 }
@@ -103,11 +110,12 @@ public class RockRoulette implements KeyListener {
 	public static HandGesture handGesture;
 	public static boolean connected = false;
 	public static RockWindow rw;
+	public static BufferedReader inFromServer;
 	
     public static void main(String[] args) throws Exception{
     	//Server properties
     	String server = "54.172.108.156";
-    	int port = 9016;
+    	int port = 9020;
     	
     	//Create GUI 
     	rw = new RockWindow(); 
@@ -122,7 +130,7 @@ public class RockRoulette implements KeyListener {
         
     	//TCP Client Configuration
     	//Currently sends a sentence to the server
-        String winner;
+        String winner = "";
            
         //Create socket and bufferedReader for user input
         BufferedReader inFromUser = new BufferedReader( new InputStreamReader(System.in));
@@ -132,15 +140,15 @@ public class RockRoulette implements KeyListener {
         
         //Create server output/input streams
         outToServer = new DataOutputStream(clientSocket.getOutputStream());
-        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
            
         //Take input and write to server via DataOutputStream
         //sentence = inFromUser.readLine();
         //outToServer.writeBytes(sentence + '\n');
-        winner = inFromServer.readLine();
+        //winner = inFromServer.readLine();
            
         //Print out data received from server
-        System.out.println("FROM SERVER: " + winner + " WINS!");
+        //System.out.println("FROM SERVER: " + winner + " WINS!");
         
 
         if(close == true) {
