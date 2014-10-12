@@ -114,8 +114,8 @@ public class RockRoulette implements KeyListener {
 	
     public static void main(String[] args) throws Exception{
     	//Server properties
-    	String server = "54.172.108.156";
-    	int port = 9020;
+    	String server = "54.172.82.98";
+    	int port = 9010;
     	
     	//Create GUI 
     	rw = new RockWindow(); 
@@ -156,6 +156,7 @@ public class RockRoulette implements KeyListener {
              clientSocket.close();
              
              //Remove listener
+             System.out.println("Closed");
              controller.removeListener(listener);
              return;
         }
