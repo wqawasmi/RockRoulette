@@ -9,6 +9,7 @@ public class MiniServer extends Thread{
     private Socket socket = null;
     public String result = "";
     private int playerNum;
+    public DataOutputStream outToClient;
     
     public MiniServer(Socket socket, int pNum) {
 
@@ -25,22 +26,27 @@ public class MiniServer extends Thread{
                 try {
                      BufferedReader inFromClient =
                        new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                     DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
+                     outToClient = new DataOutputStream(socket.getOutputStream());
                       result = inFromClient.readLine();
                      //System.out.println("Received: " + result);
+                    
+                    if(result != null) {
+                         if(playerNum == 1 && result != null) {
+                             Game.player1 = Integer.parseInt(result);
+                         } else {
+                             Game.player2 = Integer.parseInt(result);
+                         }  
+                    }
              
-                     if(playerNum == 1) {
-                         Game.player1 = result;
-                      } else {
-                       Game.player2 = result;
-                     }
-             
-                     if(Game.gameReady()) {
-                        System.out.println("Game Started");
-                        Game.processGestures();
-                        Game.gameStart = false;
-                     }
+                    if(Game.winner != "") {
+                        outToClient.writeBytes(Game.winner);
+                        System.out.println("SENT TO CLIENT: " + Game.winner);
+                    }
                       
+                    if(Game.gameReady()) {
+                        Game.processGestures();
+                    }
+                     
                 } catch(IOException e) {
                         System.out.println("Error: " + e);
                 }
