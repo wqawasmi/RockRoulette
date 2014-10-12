@@ -1,5 +1,4 @@
 import com.leapmotion.leap.*;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
@@ -19,9 +18,11 @@ class SampleListener extends Listener {
     	  Frame frame = controller.frame();
     	  	
     	  	//Loop through hands and detect open palm for "Paper" action
+    	  try {
     	  	for(int index = 0; index < frame.hands().count(); index++) {
     	  		Hand hand = frame.hands().get(index);
     	  		
+    	  		//Count extended fingers by looping through and checking for isExtended()
     	  		int extendedFingers = 0;
     	  		for (Finger finger : hand.fingers())
     	  		{
@@ -37,6 +38,10 @@ class SampleListener extends Listener {
     	  		else
     	  			RockRoulette.handGesture = RockRoulette.HandGesture.FAILED;
     	  	}
+    	  	
+    	  } catch(NullPointerException e) {
+    		  System.out.println("No hand detected yet.");
+    	  }
     	  
     	  	//Loop through gestures
     	   /* for (int index = 0; index < frame.gestures().count(); index++) {
@@ -55,26 +60,27 @@ class SampleListener extends Listener {
     			
     			try {
     				//System.out.println( tStart);
+    				RockRoulette.rw.setGesture(RockRoulette.handGesture);
     				switch(RockRoulette.handGesture) {
-    				case PAPER:
-    					//System.out.println("PAPER");
-    					RockRoulette.outToServer.writeBytes("2\n");
-    					break;
     				case ROCK:
-    					//System.out.println("ROCK");
+    					System.out.println("ROCK");
     					RockRoulette.outToServer.writeBytes("1\n");
     					break;
+    				case PAPER:
+    					System.out.println("PAPER");
+    					RockRoulette.outToServer.writeBytes("2\n");
+    					break;
     				case SCISSOR:
-    					//System.out.println("SCISSOR");
+    					System.out.println("SCISSOR");
     					RockRoulette.outToServer.writeBytes("3\n");
     					break;
     				default:
-    					//System.out.println("FAILED");
+    					System.out.println("FAILED");
     					RockRoulette.outToServer.writeBytes("0\n");
     				}
-    			} catch (IOException e) {
+    			} catch (Exception e) {
     				// TODO Auto-generated catch block
-    				e.printStackTrace();
+    				System.out.println("No Hand Detected");
     			}
     			
     			//Reset tStart after certain time passed
@@ -96,11 +102,16 @@ public class RockRoulette implements KeyListener {
 	
 	public static HandGesture handGesture;
 	public static boolean connected = false;
-
+	public static RockWindow rw;
+	
     public static void main(String[] args) throws Exception{
     	//Server properties
     	String server = "54.172.108.156";
     	int port = 9016;
+    	
+    	//Create GUI 
+    	rw = new RockWindow(); 
+    	rw.showRadioButtonDemo();
     	
     	//Add controller
     	SampleListener listener = new SampleListener();
@@ -111,8 +122,7 @@ public class RockRoulette implements KeyListener {
         
     	//TCP Client Configuration
     	//Currently sends a sentence to the server
-        String sentence;
-        String modifiedSentence;
+        String winner;
            
         //Create socket and bufferedReader for user input
         BufferedReader inFromUser = new BufferedReader( new InputStreamReader(System.in));
@@ -127,10 +137,10 @@ public class RockRoulette implements KeyListener {
         //Take input and write to server via DataOutputStream
         //sentence = inFromUser.readLine();
         //outToServer.writeBytes(sentence + '\n');
-        modifiedSentence = inFromServer.readLine();
+        winner = inFromServer.readLine();
            
         //Print out data received from server
-        System.out.println("FROM SERVER: " + modifiedSentence + " WINS!");
+        System.out.println("FROM SERVER: " + winner + " WINS!");
         
 
         if(close == true) {
