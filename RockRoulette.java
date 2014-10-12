@@ -54,7 +54,7 @@ class SampleListener extends Listener {
     		if(System.currentTimeMillis() - tStart > 1000 && RockRoulette.connected) {
     			
     			try {
-    				System.out.println( tStart);
+    				//System.out.println( tStart);
     				switch(RockRoulette.handGesture) {
     				case PAPER:
     					System.out.println("PAPER");
@@ -70,7 +70,7 @@ class SampleListener extends Listener {
     					break;
     				default:
     					System.out.println("FAILED");
-    					RockRoulette.outToServer.writeBytes("FAILED\n");
+    					RockRoulette.outToServer.writeBytes("NOTHING\n");
     				}
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
@@ -98,7 +98,9 @@ public class RockRoulette implements KeyListener {
 	public static boolean connected = false;
 
     public static void main(String[] args) throws Exception{
-    	//Status of gesture
+    	//Server properties
+    	String server = "54.172.108.156";
+    	int port = 9000;
     	
     	//Add controller
     	SampleListener listener = new SampleListener();
@@ -114,7 +116,7 @@ public class RockRoulette implements KeyListener {
            
         //Create socket and bufferedReader for user input
         BufferedReader inFromUser = new BufferedReader( new InputStreamReader(System.in));
-        Socket clientSocket = new Socket("54.172.108.156", 8999);
+        Socket clientSocket = new Socket(server, port);
         connected = true;
         System.out.println("Connected to Server");
         
