@@ -5,9 +5,9 @@ public class Game {
     public static String player2;
     public static boolean gameStart = false;
     
-    private String paper = "PAPER";
-    private String rock  = "ROCK";
-    private String scissors = "SCISSORS";
+    private String paper = "PAPER\n";
+    private String rock  = "ROCK\n";
+    private String scissors = "SCISSORS\n";
     
     public Game() {
         //constructor shiz
@@ -34,6 +34,7 @@ public class Game {
         
         if(player1.equals(player2)) {
             System.out.println("TIE!!!!");
+            //System.out.print(player1);
         } 
         else if(player1.equals(rock) && player2.equals(scissors)){
             System.out.println("Rock CRUSHES Scissors!!!");
