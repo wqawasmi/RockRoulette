@@ -23,10 +23,21 @@ class TCPServer
             //Reset player count once two clients have connected
             if(playerNum > 2) {
                 playerNum = 1;
-               // Game.resetGame();
+                //Game.resetGame();
             }
                 
             mini.start();
+            
+           /* if(Game.gameReady()) {
+                 System.out.println("Game Started");
+                 
+                 String winner = Game.processGestures() + "\n";
+                 mini.getThreadGroup().outToClient.writeBytes(winner);
+                 
+                 System.out.println("SENT TO CLIENT: " + winner);
+                 Game.gameStart = false;
+            }
+            */
         }
         
          
