@@ -1,7 +1,7 @@
 Rock, Paper, Scissors over TCP using Leap Motion
 =================
 
-**Note: This was written very hastily at HackRU, a hackathon hosted by Rutgers University. Don't judge the code too too hard :3**
+**Note: This was written very hastily at HackRU, a hackathon hosted by Rutgers University.**
 
 Rock Paper Scissors Roulette with Leap Motion and TCP Sockets
 
